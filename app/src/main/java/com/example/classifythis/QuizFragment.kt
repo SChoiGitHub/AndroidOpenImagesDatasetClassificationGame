@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import com.squareup.picasso.Picasso
 
 class QuizFragment : Fragment() {
 
@@ -39,7 +39,13 @@ class QuizFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(QuizViewModel::class.java)
 
         var imageView = view.findViewById<ImageView>(R.id.quizImageView)
-        viewModel.displayImage(imageView)
+        var textView1 = view.findViewById<TextView>(R.id.quizButtonOption1)
+        var textView2 = view.findViewById<TextView>(R.id.quizButtonOption2)
+        var textView3 = view.findViewById<TextView>(R.id.quizButtonOption3)
+        var textView4 = view.findViewById<TextView>(R.id.quizButtonOption4)
+
+
+        viewModel.displayImageAndOptions(imageView,textView1,textView2,textView3,textView4)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

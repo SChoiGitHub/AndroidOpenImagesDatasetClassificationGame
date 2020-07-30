@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.util.Log.d
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.AndroidViewModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -16,16 +17,19 @@ data class ImageRow(val url: String, val xMin: Float, val xMax: Float, val yMin:
 
 class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
-    var currentDisplayedImages = ArrayList<ImageRow>(4)
     var allImages = ArrayList<ImageRow>()
+    var allClassifications = ArrayList<String>()
+    var correctImageClassification = ""
+    var correctImageIndex = 0
 
     init{
         try {
-            var csvFilepath = getApplication<Application>().resources.openRawResource(R.raw.sample)
-            var csvReader = BufferedReader(InputStreamReader(csvFilepath))
+            //Load Image Rows
+            var rawResourceImageRows = getApplication<Application>().resources.openRawResource(R.raw.sample)
+            var readerRows = BufferedReader(InputStreamReader(rawResourceImageRows))
 
-            csvReader.readLine()
-            var row : String? = csvReader.readLine()
+            readerRows.readLine()
+            var row : String? = readerRows.readLine()
             while(row != null){
                 val values = row.split(",")
                 val currentImage =  ImageRow(
@@ -36,7 +40,17 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
                     values[4].toFloat(),
                     values[5])
                 allImages.add(currentImage)
-                row = csvReader.readLine()
+                row = readerRows.readLine()
+            }
+
+            //Load Classification Strings
+            var rawResourceClasses = getApplication<Application>().resources.openRawResource(R.raw.classifications)
+            var readerClassifications = BufferedReader(InputStreamReader(rawResourceClasses))
+            readerClassifications.readLine()
+            var classification : String? = readerClassifications.readLine()
+            while(classification != null){
+                allClassifications.add(classification)
+                classification = readerClassifications.readLine()
             }
         } catch (e : Exception) {
             e.message?.let { d("ERROR", it) }
@@ -44,30 +58,36 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
     }
 
-    fun displayImage(imageView : ImageView){
-        Picasso.get().load(allImages[0].url)
-            .transform(BoundingBoxCrop(allImages[0]))
-            .into(imageView);
+    fun getRandomClassification() : String{
+        return allClassifications[(0 until allClassifications.size).random()]
     }
 
-    fun selectImages() : ImageRow{
-        //Get four unique indices
-        var selectedIndices = setOf(
-            (0 until allImages.size).random(),
-            (0 until allImages.size).random(),
-            (0 until allImages.size).random(),
-            (0 until allImages.size).random()
-        )
-        while(selectedIndices.size != 4){
-            selectedIndices = setOf(
-                (0 until allImages.size).random(),
-                (0 until allImages.size).random(),
-                (0 until allImages.size).random(),
-                (0 until allImages.size).random()
-            )
-        }
-        return allImages[0]
+    fun getRandomizedLabelSet() : Set<String>{
+        return setOf(getRandomClassification(),getRandomClassification(),getRandomClassification(),getRandomClassification())
     }
+
+    fun displayImageAndOptions(imageView : ImageView, option0 : TextView, option1 : TextView, option2 : TextView, option3 : TextView){
+        val chosenImageRowIndex = (0 until allImages.size).random()
+        val chosenRow = allImages[chosenImageRowIndex]
+        Picasso.get().load(chosenRow.url)
+            .transform(BoundingBoxCrop(chosenRow))
+            .into(imageView);
+        correctImageClassification = chosenRow.classification
+        correctImageIndex = (0 until 4).random()
+
+        var labelSet = getRandomizedLabelSet()
+        while(labelSet.size < 4){
+            labelSet = getRandomizedLabelSet()
+        }
+
+        val labelList = labelSet.toList().toMutableList()
+        labelList[correctImageIndex] = correctImageClassification
+        option0.text = labelList[0]
+        option1.text = labelList[1]
+        option2.text = labelList[2]
+        option3.text = labelList[3]
+    }
+
 }
 
 class BoundingBoxCrop(val image : ImageRow) : Transformation {
