@@ -11,7 +11,7 @@
         android:id="@+id/quizTitle"
         android:layout_width="75dp"
         android:layout_height="52dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="32dp"
         android:text="Quiz"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,13 +21,24 @@
 
     <TextView
         android:id="@+id/quizInstructions"
-        android:layout_width="112dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="108dp"
-        android:text="What is this image?"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="92dp"
+        android:text="What is the best classification for this image?"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/quizUrl"
+        android:layout_width="380dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="116dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,8 +100,8 @@
     <ImageView
         android:id="@+id/quizImageView"
         android:layout_width="387dp"
-        android:layout_height="305dp"
-        android:layout_marginTop="144dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="156dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

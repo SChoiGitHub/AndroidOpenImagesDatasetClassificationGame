@@ -6,6 +6,7 @@ import android.util.Log.d
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.AndroidViewModel
+import com.squareup.picasso.Callback
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.math.ceil
@@ -66,12 +67,24 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
         return setOf(getRandomClassification(),getRandomClassification(),getRandomClassification(),getRandomClassification())
     }
 
-    fun displayImageAndOptions(imageView : ImageView, option0 : TextView, option1 : TextView, option2 : TextView, option3 : TextView){
-        val chosenImageRowIndex = (0 until allImages.size).random()
-        val chosenRow = allImages[chosenImageRowIndex]
-        Picasso.get().load(chosenRow.url)
-            .transform(BoundingBoxCrop(chosenRow))
-            .into(imageView);
+    fun displayImageAndOptions(imageView : ImageView, urlText : TextView, option0 : TextView, option1 : TextView, option2 : TextView, option3 : TextView){
+        var imageLoaded = false
+        var chosenImageRowIndex = (0 until allImages.size).random()
+        var chosenRow = allImages[chosenImageRowIndex]
+        while(!imageLoaded){
+            chosenImageRowIndex = (0 until allImages.size).random()
+            chosenRow = allImages[chosenImageRowIndex]
+            urlText.text = chosenRow.url
+            Picasso.get().load(chosenRow.url)
+                .transform(BoundingBoxCrop(chosenRow))
+                .into(imageView, object :  Callback{
+                    override fun onSuccess() {imageLoaded=true}
+                    override fun onError(e: java.lang.Exception?) {imageLoaded=false}
+                });
+        }
+
+
+
         correctImageClassification = chosenRow.classification
         correctImageIndex = (0 until 4).random()
 
