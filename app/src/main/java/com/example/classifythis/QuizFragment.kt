@@ -38,9 +38,8 @@ class QuizFragment : Fragment() {
         ViewModelProviders.of(this).get(QuizViewModel::class.java)
         viewModel = ViewModelProviders.of(this).get(QuizViewModel::class.java)
 
-        var img = viewModel.selectImages()
         var imageView = view.findViewById<ImageView>(R.id.quizImageView)
-        Picasso.get().load(img.url).into(imageView);
+        viewModel.displayImage(imageView)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
