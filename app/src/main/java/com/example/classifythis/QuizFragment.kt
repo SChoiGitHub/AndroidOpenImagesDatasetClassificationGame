@@ -35,6 +35,8 @@ class QuizFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        ViewModelProviders.of(this).get(QuizViewModel::class.java)
+
         viewModel = ViewModelProviders.of(this).get(QuizViewModel::class.java)
     }
 
