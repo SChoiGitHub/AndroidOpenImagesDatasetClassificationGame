@@ -59,6 +59,11 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
     }
 
+
+    fun answer(answer : String) : Boolean{
+        return answer == correctImageClassification
+    }
+
     fun getRandomClassification() : String{
         return allClassifications[(0 until allClassifications.size).random()]
     }
@@ -83,8 +88,6 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
                 });
         }
 
-
-
         correctImageClassification = chosenRow.classification
         correctImageIndex = (0 until 4).random()
 
@@ -103,6 +106,7 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
 }
 
+//TODO One class per file?
 class BoundingBoxCrop(val image : ImageRow) : Transformation {
     override fun key(): String {
         return "BoundingBoxCrop()"

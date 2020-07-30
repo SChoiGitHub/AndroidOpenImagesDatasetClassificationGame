@@ -18,12 +18,39 @@ class QuizFragment : Fragment() {
     }
 
     private lateinit var viewModel: QuizViewModel
+    lateinit var imageView : ImageView
+    lateinit var textUrl : TextView
+    lateinit var textView1 : TextView
+    lateinit var textView2 : TextView
+    lateinit var textView3 : TextView
+    lateinit var textView4 : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_quiz, container, false)
+    }
+
+    fun nextQuestion(view: View){
+        viewModel.displayImageAndOptions(imageView,textUrl,textView1,textView2,textView3,textView4)
+    }
+
+    //TODO: View parameter is out of place here?
+    fun answerQuiz(answer : String, view : View){
+        val isCorrect = viewModel.answer(answer)
+        lateinit var dialogText : String;
+
+        if(isCorrect){
+            dialogText = "$answer is correct!"
+        }else{
+            dialogText = "$answer is wrong.\nThe classification answer is ${viewModel.correctImageClassification}."
+        }
+
+        val nextQuestionPickle = { -> nextQuestion(view)}
+
+        var dialog = QuizResponseFragment(dialogText,nextQuestionPickle)
+        dialog.show(parentFragmentManager,"DIALOG")
     }
 
 
@@ -37,15 +64,30 @@ class QuizFragment : Fragment() {
         //TODO: Is this the best place to put this?
         ViewModelProviders.of(this).get(QuizViewModel::class.java)
         viewModel = ViewModelProviders.of(this).get(QuizViewModel::class.java)
+        imageView = view.findViewById<ImageView>(R.id.quizImageView)
+        textUrl = view.findViewById<TextView>(R.id.quizUrl)
+        textView1 = view.findViewById<TextView>(R.id.quizButtonOption1)
+        textView2 = view.findViewById<TextView>(R.id.quizButtonOption2)
+        textView3 = view.findViewById<TextView>(R.id.quizButtonOption3)
+        textView4 = view.findViewById<TextView>(R.id.quizButtonOption4)
 
-        var imageView = view.findViewById<ImageView>(R.id.quizImageView)
-        var textView1 = view.findViewById<TextView>(R.id.quizButtonOption1)
-        var textView2 = view.findViewById<TextView>(R.id.quizButtonOption2)
-        var textView3 = view.findViewById<TextView>(R.id.quizButtonOption3)
-        var textView4 = view.findViewById<TextView>(R.id.quizButtonOption4)
+        nextQuestion(view)
 
+        view.findViewById<Button>(R.id.quizButtonOption1).setOnClickListener {
+            answerQuiz(textView1.text as String,view)
+        }
 
-        viewModel.displayImageAndOptions(imageView,textView1,textView2,textView3,textView4)
+        view.findViewById<Button>(R.id.quizButtonOption2).setOnClickListener {
+            answerQuiz(textView2.text as String,view)
+        }
+
+        view.findViewById<Button>(R.id.quizButtonOption3).setOnClickListener {
+            answerQuiz(textView3.text as String,view)
+        }
+
+        view.findViewById<Button>(R.id.quizButtonOption4).setOnClickListener {
+            answerQuiz(textView4.text as String,view)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
