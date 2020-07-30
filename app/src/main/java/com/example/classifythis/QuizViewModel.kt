@@ -1,9 +1,12 @@
 package com.example.classifythis
 
 import android.app.Application
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.util.Log.d
 import androidx.lifecycle.AndroidViewModel
+import androidx.loader.content.AsyncTaskLoader
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.random.Random
@@ -40,12 +43,7 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
     }
 
-    fun downloadImages(img : Image){
-        val stream = java.net.URL(img.url).openStream()
-        val picture = BitmapFactory.decodeStream(stream)
-    }
-
-    fun selectImages(){
+    fun selectImages() : Image{
         //Get four unique indices
         var selectedIndices = setOf(
             (0 until allImages.size).random(),
@@ -61,9 +59,6 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
                 (0 until allImages.size).random()
             )
         }
-
-        for(i in selectedIndices){
-
-        }
+        return allImages[0]
     }
 }
