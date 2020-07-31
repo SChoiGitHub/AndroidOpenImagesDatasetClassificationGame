@@ -33,7 +33,7 @@ class QuizFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_quiz, container, false)
     }
 
-    fun nextQuestion(view: View){
+    fun nextQuestion(){
         viewModel.displayImageAndOptions(imageView,textView1,textView2,textView3,textView4)
     }
 
@@ -49,8 +49,8 @@ class QuizFragment : Fragment() {
         }
 
         val nextQuestionCallback = { ->
-            setTextboxesToLoading()
-            nextQuestion(view)
+            setTextboxesToLoading(view)
+            nextQuestion()
         }
 
         var dialog = QuizResponseFragment(dialogText,nextQuestionCallback)
@@ -80,7 +80,7 @@ class QuizFragment : Fragment() {
         textView3 = view.findViewById(R.id.quizButtonOption3)
         textView4 = view.findViewById(R.id.quizButtonOption4)
 
-        nextQuestion(view)
+        nextQuestion()
 
         view.findViewById<Button>(R.id.quizButtonOption1).setOnClickListener {
             answerQuiz(textView1.text as String,view)
