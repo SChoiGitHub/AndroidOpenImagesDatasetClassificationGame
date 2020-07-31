@@ -15,11 +15,13 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
+import java.lang.reflect.InvocationTargetException
 
 data class ImageRow(val imageUrl: String, val landingUrl : String, val xMin: Float, val xMax: Float, val yMin: Float, val yMax: Float, val classification: String)
 
 class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
+    //TODO Too many variables?
     var allImages = ArrayList<ImageRow>()
     var allClassifications = ArrayList<String>()
     lateinit var chosenRow : ImageRow;
@@ -36,12 +38,9 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
             }
         }
     }
-
     var currentTransformation : ImageTransformation = ImageTransformation.DRAW
-
     var correctImageClassification = ""
     var correctImageIndex = 0
-
     var correctAnswers = 0
     var incorrectAnswers = 0
 
@@ -88,7 +87,7 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
         }else{
             currentTransformation = ImageTransformation.DRAW
         }
-        displayImage(imageView)
+        displayImage(imageView,{},{})
     }
 
     fun answer(answer : String) : Boolean{
@@ -118,43 +117,43 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
         chosenRow = allImages[chosenImageRowIndex]
     }
 
-    fun displayImage(imageView : ImageView) : Boolean{
-        var success = false
+    fun displayImage(imageView : ImageView, successCallback : () -> Unit, errorCallback : () -> Unit){
         Picasso.get().load(chosenRow.imageUrl)
             .noPlaceholder()
             .transform(currentTransformation(chosenRow))
             .into(imageView, object :  Callback{
-                override fun onSuccess() {success = true}
-                override fun onError(e: java.lang.Exception?) {success=false}
+                override fun onSuccess() {
+                    successCallback()
+                }
+                override fun onError(e: java.lang.Exception?) {
+                    errorCallback()
+                }
             });
-        return success
     }
 
-    fun displayImage(imageView : ImageView, urlText : TextView) : Boolean{
-        urlText.text = chosenRow.imageUrl
-        return displayImage(imageView)
-    }
 
-    fun displayImageAndOptions(imageView : ImageView, urlText : TextView, option0 : TextView, option1 : TextView, option2 : TextView, option3 : TextView){
-        //TODO Excess use of global variables is a code smell
-        do{
-            randomizeChosenRow()
-        }while((!displayImage(imageView,urlText)))
+    fun displayImageAndOptions(imageView : ImageView, option0 : TextView, option1 : TextView, option2 : TextView, option3 : TextView){
+        val errorCallback = { ->
+            displayImageAndOptions(imageView, option0, option1, option2, option3)
+        };
+        val successCallback = { ->
+            correctImageClassification = chosenRow.classification
+            correctImageIndex = (0 until 4).random()
 
-        correctImageClassification = chosenRow.classification
-        correctImageIndex = (0 until 4).random()
+            var labelSet = getRandomizedLabelSet()
+            while(labelSet.size < 4){
+                labelSet = getRandomizedLabelSet()
+            }
 
-        var labelSet = getRandomizedLabelSet()
-        while(labelSet.size < 4){
-            labelSet = getRandomizedLabelSet()
-        }
-
-        val labelList = labelSet.toList().toMutableList()
-        labelList[correctImageIndex] = correctImageClassification
-        option0.text = labelList[0]
-        option1.text = labelList[1]
-        option2.text = labelList[2]
-        option3.text = labelList[3]
+            val labelList = labelSet.toList().toMutableList()
+            labelList[correctImageIndex] = correctImageClassification
+            option0.text = labelList[0]
+            option1.text = labelList[1]
+            option2.text = labelList[2]
+            option3.text = labelList[3]
+        };
+        randomizeChosenRow()
+        displayImage(imageView,successCallback,errorCallback)
     }
 
 }
@@ -194,24 +193,16 @@ class BoundingBoxDraw(val image : ImageRow) : Transformation {
         val yMax: Float = image.yMax
         val x1 = floor(source.width*xMin)
         val y1 = floor(source.height*yMin)
-        val x2 = floor(source.width*xMax)
-        val y2 = floor(source.height*yMax)
+        val x2 = ceil(source.width*xMax)
+        val y2 = ceil(source.height*yMax)
         var result = source.copy(Bitmap.Config.ARGB_8888,true)
         var canvas = Canvas().apply{ setBitmap(result)}
-        canvas.drawRect(x1,y1,x2,y2, Paint().apply {
-            setARGB(255, 0, 0, 255)
-            style = Paint.Style.STROKE
-            strokeWidth = 5.0F
-        })
-        canvas.drawRect(x1,y1,x2,y2, Paint().apply {
-            setARGB(255, 0, 255, 0)
-            style = Paint.Style.STROKE
-            strokeWidth = 4.0F
-        })
-        canvas.drawRect(x1,y1,x2,y2, Paint().apply {
+
+        val padding = 0.015F*maxOf(source.width,source.height).toFloat()
+        canvas.drawRect(x1-padding,y1-padding,x2+padding,y2+padding, Paint().apply {
             setARGB(255, 255, 0, 0)
             style = Paint.Style.STROKE
-            strokeWidth = 3.0F
+            strokeWidth = padding
         })
         if(result != source){
             source.recycle()

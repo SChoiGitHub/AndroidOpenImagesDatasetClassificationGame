@@ -22,7 +22,6 @@ class QuizFragment : Fragment() {
 
     private lateinit var viewModel: QuizViewModel
     lateinit var imageView : ImageView
-    lateinit var textUrl : TextView
     lateinit var textView1 : TextView
     lateinit var textView2 : TextView
     lateinit var textView3 : TextView
@@ -36,7 +35,7 @@ class QuizFragment : Fragment() {
     }
 
     fun nextQuestion(view: View){
-        viewModel.displayImageAndOptions(imageView,textUrl,textView1,textView2,textView3,textView4)
+        viewModel.displayImageAndOptions(imageView,textView1,textView2,textView3,textView4)
     }
 
     //TODO: View parameter is out of place here?
@@ -67,12 +66,11 @@ class QuizFragment : Fragment() {
         //TODO: Is this the best place to put this?
 
         viewModel = ViewModelProviders.of(requireActivity()).get(QuizViewModel::class.java)
-        imageView = view.findViewById<ImageView>(R.id.quizImageView)
-        textUrl = view.findViewById<TextView>(R.id.quizUrl)
-        textView1 = view.findViewById<TextView>(R.id.quizButtonOption1)
-        textView2 = view.findViewById<TextView>(R.id.quizButtonOption2)
-        textView3 = view.findViewById<TextView>(R.id.quizButtonOption3)
-        textView4 = view.findViewById<TextView>(R.id.quizButtonOption4)
+        imageView = view.findViewById(R.id.quizImageView)
+        textView1 = view.findViewById(R.id.quizButtonOption1)
+        textView2 = view.findViewById(R.id.quizButtonOption2)
+        textView3 = view.findViewById(R.id.quizButtonOption3)
+        textView4 = view.findViewById(R.id.quizButtonOption4)
 
         nextQuestion(view)
 
