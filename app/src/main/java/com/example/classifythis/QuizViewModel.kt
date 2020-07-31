@@ -9,13 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.AndroidViewModel
 import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.math.ceil
 import kotlin.math.floor
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Transformation
-import java.lang.reflect.InvocationTargetException
 
 data class ImageRow(val imageUrl: String, val landingUrl : String, val xMin: Float, val xMax: Float, val yMin: Float, val yMax: Float, val classification: String)
 
