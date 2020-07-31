@@ -29,8 +29,8 @@
 
     <string name="quiz_fragment_label">Quiz Fragment</string>
 
-    <string name="quiz_option1">Option 1</string>
-    <string name="quiz_option2">Option 2</string>
-    <string name="quiz_option3">Option 3</string>
-    <string name="quiz_option4">Option 4</string>
+    <string name="quiz_option1">Loading...</string>
+    <string name="quiz_option2">Loading...</string>
+    <string name="quiz_option3">Loading...</string>
+    <string name="quiz_option4">Loading...</string>
 </resources>
