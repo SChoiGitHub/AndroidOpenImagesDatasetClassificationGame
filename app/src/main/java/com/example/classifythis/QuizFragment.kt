@@ -1,5 +1,7 @@
 package com.example.classifythis
 
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -96,6 +98,11 @@ class QuizFragment : Fragment() {
 
         view.findViewById<Button>(R.id.quizButtonChangeDisplay).setOnClickListener {
             viewModel.changeDisplay(imageView)
+        }
+
+        view.findViewById<Button>(R.id.quizButtonImageSource).setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.getCurrentLandingUrl()))
+            startActivity(Intent.createChooser(intent,"Choose Browser:"))
         }
 
     }

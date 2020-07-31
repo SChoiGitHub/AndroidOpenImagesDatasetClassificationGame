@@ -16,7 +16,7 @@ import kotlin.math.floor
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
 
-data class ImageRow(val url: String, val xMin: Float, val xMax: Float, val yMin: Float, val yMax: Float, val classification: String)
+data class ImageRow(val imageUrl: String, val landingUrl : String, val xMin: Float, val xMax: Float, val yMin: Float, val yMax: Float, val classification: String)
 
 class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
@@ -57,11 +57,12 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
                 val values = row.split(",")
                 val currentImage =  ImageRow(
                     values[0],
-                    values[1].toFloat(),
+                    values[1],
                     values[2].toFloat(),
                     values[3].toFloat(),
                     values[4].toFloat(),
-                    values[5])
+                    values[5].toFloat(),
+                    values[6])
                 allImages.add(currentImage)
                 row = readerRows.readLine()
             }
@@ -100,6 +101,10 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
         return correct
     }
 
+    fun getCurrentLandingUrl() : String{
+        return chosenRow.landingUrl
+    }
+
     fun getRandomClassification() : String{
         return allClassifications[(0 until allClassifications.size).random()]
     }
@@ -115,7 +120,7 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
     fun displayImage(imageView : ImageView) : Boolean{
         var success = false
-        Picasso.get().load(chosenRow.url)
+        Picasso.get().load(chosenRow.imageUrl)
             .noPlaceholder()
             .transform(currentTransformation(chosenRow))
             .into(imageView, object :  Callback{
@@ -126,7 +131,7 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
     }
 
     fun displayImage(imageView : ImageView, urlText : TextView) : Boolean{
-        urlText.text = chosenRow.url
+        urlText.text = chosenRow.imageUrl
         return displayImage(imageView)
     }
 
