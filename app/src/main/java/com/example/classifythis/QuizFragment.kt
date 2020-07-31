@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_quiz.*
 
 class QuizFragment : Fragment() {
 
@@ -88,6 +89,15 @@ class QuizFragment : Fragment() {
         view.findViewById<Button>(R.id.quizButtonOption4).setOnClickListener {
             answerQuiz(textView4.text as String,view)
         }
+
+        view.findViewById<Button>(R.id.quizButtonOption4).setOnClickListener {
+            answerQuiz(textView4.text as String,view)
+        }
+
+        view.findViewById<Button>(R.id.quizButtonChangeDisplay).setOnClickListener {
+            viewModel.changeDisplay(imageView)
+        }
+
     }
 
 }
