@@ -14,16 +14,20 @@
     </string>
 
     <string name="instructions_description">
-        A random image from the dataset will be chosen and cropped to a bounding box that
-        has a classification. You must guess the correct classification out of four options.
-        Sometimes, there can be multiple answers (for example, a typical human face can be classified as
-        &quot;Face&quot; or &quot;Human Hair&quot;) and the quiz will only accept one classification as the true answer.
+        A random image from the dataset will be chosen and you must guess the correct classification
+        out of four options.
+        Sometimes, there can be multiple answers (for example, a human head can be classified as
+        <b>Face</b> or <b>Human Hair</b>) and the quiz will only accept one classification as the true answer.
         This is a design flaw, so sometimes the player may be unfairly considered wrong.
+        There is also a button labeled <b>Change Display</b> to switch between seeing the entire
+        picture with a red bounding box around the specific object and a cropped version of the
+        picture with only the object in question.
     </string>
 
     <string name="license_description">
         The annotations from the Open Images Dataset (Version 6) are licensed under the CC BY 4.0 License
         while the images linked in the dataset are listed to be licensed under the CC BY 2.0 license.
+        A button labeled <b>Image Source</b> can be used to go to the original source of the image.
     </string>
 
 

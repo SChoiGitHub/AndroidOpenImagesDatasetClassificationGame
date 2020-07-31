@@ -22,19 +22,21 @@
         android:id="@+id/homeButtonStat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="460dp"
         android:text="Statistics"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.939"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeButtonPlay" />
+        app:layout_constraintTop_toBottomOf="@+id/homeTitle" />
 
     <Button
         android:id="@+id/homeButtonPlay"
         android:layout_width="99dp"
         android:layout_height="48dp"
-        android:layout_marginTop="404dp"
+        android:layout_marginTop="460dp"
         android:text="Play"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeTitle" />
 
@@ -50,18 +52,19 @@
 
     <TextView
         android:id="@+id/textLicenseDescription"
-        android:layout_width="375dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="420dp"
+        android:layout_width="370dp"
+        android:layout_height="94dp"
+        android:layout_marginTop="484dp"
         android:text="@string/license_description"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textInstructions"
-        android:layout_width="377dp"
-        android:layout_height="141dp"
+        android:layout_width="381dp"
+        android:layout_height="200dp"
         android:layout_marginTop="264dp"
         android:text="@string/instructions_description"
         app:layout_constraintEnd_toEndOf="parent"
