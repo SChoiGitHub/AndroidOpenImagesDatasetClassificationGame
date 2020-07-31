@@ -1,11 +1,14 @@
 package com.example.classifythis
 
 import android.os.Bundle
+import android.util.Log.d
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
 /**
@@ -23,6 +26,11 @@ class StatisticsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //TODO Information sharing for statistics later.
+        var viewModel = ViewModelProviders.of(requireActivity()).get(QuizViewModel::class.java)
+        view.findViewById<TextView>(R.id.statTextCorrectAnswers).text = "Correct Answers: ${viewModel.correctAnswers}"
+        view.findViewById<TextView>(R.id.statTextIncorrectAnswers).text = "Incorrect Answers: ${viewModel.incorrectAnswers}"
 
         view.findViewById<Button>(R.id.statButtonBack).setOnClickListener {
             findNavController().navigate(R.id.action_StatisticsFragment_to_homeFragment)

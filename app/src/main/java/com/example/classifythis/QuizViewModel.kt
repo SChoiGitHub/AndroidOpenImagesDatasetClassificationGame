@@ -6,6 +6,7 @@ import android.util.Log.d
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.squareup.picasso.Callback
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -22,6 +23,9 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
     var allClassifications = ArrayList<String>()
     var correctImageClassification = ""
     var correctImageIndex = 0
+
+    var correctAnswers = 0
+    var incorrectAnswers = 0
 
     init{
         try {
@@ -59,9 +63,14 @@ class QuizViewModel(val app : Application) : AndroidViewModel(app) {
 
     }
 
-
     fun answer(answer : String) : Boolean{
-        return answer == correctImageClassification
+        val correct = (answer == correctImageClassification)
+        if(correct){
+            correctAnswers++
+        }else{
+            incorrectAnswers++
+        }
+        return correct
     }
 
     fun getRandomClassification() : String{

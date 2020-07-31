@@ -62,8 +62,8 @@ class QuizFragment : Fragment() {
         }
 
         //TODO: Is this the best place to put this?
-        ViewModelProviders.of(this).get(QuizViewModel::class.java)
-        viewModel = ViewModelProviders.of(this).get(QuizViewModel::class.java)
+
+        viewModel = ViewModelProviders.of(requireActivity()).get(QuizViewModel::class.java)
         imageView = view.findViewById<ImageView>(R.id.quizImageView)
         textUrl = view.findViewById<TextView>(R.id.quizUrl)
         textView1 = view.findViewById<TextView>(R.id.quizButtonOption1)
@@ -88,10 +88,6 @@ class QuizFragment : Fragment() {
         view.findViewById<Button>(R.id.quizButtonOption4).setOnClickListener {
             answerQuiz(textView4.text as String,view)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
 }
