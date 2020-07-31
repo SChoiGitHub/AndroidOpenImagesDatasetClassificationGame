@@ -49,12 +49,21 @@ class QuizFragment : Fragment() {
             dialogText = "$answer is wrong.\nThe classification answer is ${viewModel.correctImageClassification}."
         }
 
-        val nextQuestionPickle = { -> nextQuestion(view)}
+        val nextQuestionCallback = { ->
+            setTextboxesToLoading()
+            nextQuestion(view)
+        }
 
-        var dialog = QuizResponseFragment(dialogText,nextQuestionPickle)
+        var dialog = QuizResponseFragment(dialogText,nextQuestionCallback)
         dialog.show(parentFragmentManager,"DIALOG")
     }
 
+    fun setTextboxesToLoading(view : View){
+        view.findViewById<Button>(R.id.quizButtonOption1).text = "Loading..."
+        view.findViewById<Button>(R.id.quizButtonOption2).text = "Loading..."
+        view.findViewById<Button>(R.id.quizButtonOption3).text = "Loading..."
+        view.findViewById<Button>(R.id.quizButtonOption4).text = "Loading..."
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,10 +93,6 @@ class QuizFragment : Fragment() {
 
         view.findViewById<Button>(R.id.quizButtonOption3).setOnClickListener {
             answerQuiz(textView3.text as String,view)
-        }
-
-        view.findViewById<Button>(R.id.quizButtonOption4).setOnClickListener {
-            answerQuiz(textView4.text as String,view)
         }
 
         view.findViewById<Button>(R.id.quizButtonOption4).setOnClickListener {
